@@ -11,6 +11,7 @@ import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import com.google.common.collect.Lists;
 
 @Configuration
 public class CloudConfig {
@@ -22,7 +23,7 @@ public class CloudConfig {
 	public Storage getStorage() throws IOException {
 	
 	Credentials credentials = GoogleCredentials
-			  .fromStream(new FileInputStream("C:/Users/M1047094/Desktop/Sindhu/encoded-bonfire-246911-93527624d928.json"));
+			  .fromStream(new FileInputStream("C:/Users/M1047094/Desktop/Sindhu/encoded-bonfire-246911-93527624d928.json")).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
 	 storage = StorageOptions.newBuilder().setCredentials(credentials)
 			  .setProjectId("encoded-bonfire-246911").build().getService();	 
 	 return storage;

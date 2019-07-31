@@ -16,17 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GCPController {
 	
-	@Value("gs://${gcs-resource-test-bucket}/sample.pdf")
+	@Value("gs://${gcs-resource-test-bucket}/my-file.txt")
 	private Resource gcsFile;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/read", method = RequestMethod.GET)
 	public String readGcsFile() throws IOException {
 		return StreamUtils.copyToString(
 				this.gcsFile.getInputStream(),
 				Charset.defaultCharset()) + "\n";
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.POST)
+	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	String writeGcs(@RequestBody String data) throws IOException {
 		try (OutputStream os = ((WritableResource) this.gcsFile).getOutputStream()) {
 			os.write(data.getBytes());
