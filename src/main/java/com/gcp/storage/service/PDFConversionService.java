@@ -5,34 +5,35 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.text.Document;
 
-public class PDFConversionService {
-	/*
-	   private static final String FILEPATH = null;
-	Document document = new Document();
-       try {
-          document.setFile(FILEPATH);
-       } catch (Exception ex) {
-          System.out.println("Error IOException " + ex);
-       }
-       float scale = 1.0f;
-       float rotation = 0f;
-       for (int i = 0; i < document.getNumberOfPages(); i++) {
-          BufferedImage image = (BufferedImage) document.getPageImage(
-              i, GraphicsRenderingHints.PRINT, Page.BOUNDARY_CROPBOX, rotation, scale);
-          RenderedImage rendImage = image;
-          try {
-             System.out.println(" capturing page " + i);
-             File file = new File("imageCapture1_" + i + ".tif");
-             ImageIO.write(rendImage, "tiff", file);
-          } catch (IOException e) {
-             e.printStackTrace();
-          }
-          image.flush();
-       }
-       document.dispose();*/
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
+import org.apache.pdfbox.rendering.ImageType;
+import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.pdfbox.tools.imageio.ImageIOUtil;
 
+public class PDFConversionService {
+
+	
+	public void convert() throws InvalidPasswordException, IOException
+	{	
+	// File file = new File("C:\\Users\\M1047094\\Desktop\\Sindhu\\sample.pdf");
+		//File file = new File("https://storage.cloud.google.com/files-pdf/sample.pdf");
+		
+		URL url = new URL("https://storage.cloud.google.com/files-pdf/sample.pdf");
+		File file = new File(url.getFile());
+	PDDocument document = PDDocument.load(file);
+	PDFRenderer pdfRenderer = new PDFRenderer(document);	
+	for (int page = 0; page < document.getNumberOfPages(); ++page)
+	{ 
+	    BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
+	    // suffix in filename will be used as the file format
+	    ImageIOUtil.writeImage(bim, file + "-" + (page+1) + ".png", 300);
+	}
+	document.close();
+	}
 }
