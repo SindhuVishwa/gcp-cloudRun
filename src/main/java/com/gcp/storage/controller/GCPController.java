@@ -37,16 +37,17 @@ public class GCPController {
 
 	 @SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	  public ResponseEntity receiveMessage(@RequestBody Body body) {
+	  public ResponseEntity receiveMessage(@RequestBody String message) {
 	    // Get PubSub message from request body.
-	    Body.Message message = body.getMessage();
+	//    Body.Message message = body.getMessage();
 	    if (message == null) {
 	      String msg = "Bad Request: invalid Pub/Sub message format";
 	      System.out.println(msg);
 	      return new ResponseEntity(msg, HttpStatus.BAD_REQUEST);
 	    }
 
-	    String data = message.getData();
+	  //  String data = message.getData();
+	    String data = message;
 	    String target =
 	        !StringUtils.isEmpty(data) ? new String(Base64.getDecoder().decode(data)) : "World";
 	    String msg = "Hello " + target + "!";
@@ -62,6 +63,7 @@ public class GCPController {
 				Charset.defaultCharset()) + "\n";
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
 	public ResponseEntity downloadFile() throws Exception {	
 		
@@ -69,6 +71,7 @@ public class GCPController {
 		
 		 return new ResponseEntity("file downloaded", HttpStatus.OK);
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/convert", method = RequestMethod.GET)
 	public ResponseEntity convertFile() throws IOException {	
 		
