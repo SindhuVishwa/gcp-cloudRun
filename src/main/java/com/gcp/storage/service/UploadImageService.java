@@ -1,6 +1,20 @@
 package com.gcp.storage.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.gcp.storage.config.CloudConfig;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
+
 public class UploadImageService {
+
+	@Autowired
+	private CloudConfig cloudConfig;
 	
 	/*try {
 	    FileInputStream serviceAccount =
@@ -21,19 +35,19 @@ public class UploadImageService {
 	    System.out.println(blob.getMediaLink());
 	} catch (Exception e){
 	    e.printStackTrace();
-	}
------------------------	
-	@Override
-  public String uploadImage(String fileName , String filePath,String fileType) throws IOException {
-    Bucket bucket = getBucket("sample-bucket");
-    InputStream inputStream = new FileInputStream(new File(filePath));
-    Blob blob = bucket.create(fileName, inputStream, fileType);
-    log.info("Blob Link:"+blob.getMediaLink());
+	}*/
+
+
+  public String uploadImage(/*String fileName , String filePath,String fileType*/) throws IOException {
+    Bucket bucket = cloudConfig.getStorage().get("files-pdf");
+    InputStream inputStream = new FileInputStream(new File("C:\\Users\\M1047094\\Desktop\\Sindhu\\image.jpg"));
+    Blob blob = bucket.create("image", inputStream, "*/*");
+    //log.info("Blob Link:"+blob.getMediaLink());
     return blob.getMediaLink();
   }
 
 
-  private Bucket getBucket(String bucketName) throws IOException {
+ /* private Bucket getBucket(String bucketName) throws IOException {
     GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(CREDENTIALS_PATH))
         .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
     Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();

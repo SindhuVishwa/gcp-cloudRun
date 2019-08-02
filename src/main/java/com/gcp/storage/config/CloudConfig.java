@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.gcp.storage.service.DownloadService;
 import com.gcp.storage.service.PDFConversionService;
+import com.gcp.storage.service.UploadImageService;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Storage;
@@ -30,11 +31,18 @@ public class CloudConfig {
 			  .setProjectId("encoded-bonfire-246911").build().getService();	 
 	 return storage;
 	}	
-@Bean
-public DownloadService downloadService()
-{
-	return new DownloadService();
-}
+	@Bean
+	public DownloadService downloadService()
+	{
+		return new DownloadService();
+	}
+
+	
+	@Bean
+	public UploadImageService uploadImageService()
+	{
+		return new UploadImageService();
+	}
 
 @Bean
 public PDFConversionService pDFConversionService()
